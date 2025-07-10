@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thiệp của Cẩm Tiên</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        audio {
+        display: none;
+        }
+        body {
+            font-family: 'Georgia', serif;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .heart {
+            position: absolute;
+            color: #ff6b6b;
+            font-size: 20px;
+            animation: floatHeart 4s infinite ease-in-out;
+            opacity: 0;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                opacity: 0;
+                transform: translateY(0) rotate(0deg);
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) rotate(360deg);
+            }
+        }
+
+        .sticker {
+            position: absolute;
+            font-size: 24px;
+            animation: bounce 2s infinite ease-in-out;
+            z-index: 10;
+            width: 60px;
+            height: auto;
+        }
+
+        .sticker img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+
+        .sticker.star1 { top: 10%; left: 10%; animation-delay: 0s; }
+        .sticker.star2 { top: 15%; right: 15%; animation-delay: 0.5s; }
+        .sticker.star3 { bottom: 13%; left: 13%; animation-delay: 1s; }
+        .sticker.star4 { bottom: 15%; right: 10%; animation-delay: 1.5s; }
+        .sticker.gift { top: 50%; left: 5%; animation-delay: 0.3s; }
+        .sticker.cake { top: 40%; right: 5%; animation-delay: 0.8s; }
+        .sticker.heart1 { top: 15%; left: 9%; animation-delay: 0.2s; }
+        .sticker.heart2 { top: 15%; right: 10%; animation-delay: 1s; }
+        .sticker.heart3 { bottom: 15%; left: 10%; animation-delay: 1.4s; }
+        
+       .flower {
+            position: absolute;
+            font-size: 24px;
+            animation: sway 3s infinite ease-in-out;
+            z-index: 10;
+            width: 60px;
+            height: auto;
+        }
+
+        .flower img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+
+        /* Animation mới: nhẹ nhàng đung đưa qua lại */
+        @keyframes sway {
+            0% { transform: rotate(0deg) translateX(0); }
+            25% { transform: rotate(2deg) translateX(3px); }
+            50% { transform: rotate(0deg) translateX(0); }
+            75% { transform: rotate(-2deg) translateX(-3px); }
+            100% { transform: rotate(0deg) translateX(0); }
+        }
+
+        /* Vị trí từng hoa */
+        .flower.hoa1 { top: 4%; left: 5%; }
+        .flower.hoa2 { top: 4%; left: 25%; }
+        .flower.hoa3 { top: 4%; left: 50%; }
+        .flower.hoa4 { top: 4%; left: 75%; }
+        .flower.hoa5 { top: 4%; right: 5%; }
+
+        .flower.hoa6 { top: 30%; right: 5%; }
+        .flower.hoa7 { top: 60%; right: 5%; }
+
+        .flower.hoa9 { bottom: 0; right: 5%; }
+        .flower.hoa10 { bottom: 0; left: 75%; }
+        .flower.hoa11 { bottom: 0; left: 50%; }
+        .flower.hoa12 { bottom: 0; left: 25%; }
+        .flower.hoa13 { bottom: 0; left: 5%; }
+
+        .flower.hoa14 { top: 30%; left: 5%; }
+        .flower.hoa15 { top: 60%; left: 5%; }
+
+        /* .sticker.hoa16 { top: 25%; left: 5%; } */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) rotate(0deg); }
+            40% { transform: translateY(-20px) rotate(10deg); }
+            60% { transform: translateY(-10px) rotate(-5deg); }
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #ffd700;
+            border-radius: 50%;
+            animation: sparkle 2s infinite ease-in-out;
+            z-index: 5;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: particle 3s infinite ease-in-out;
+            z-index: 3;
+        }
+
+        @keyframes particle {
+            0% { opacity: 0; transform: translateY(0) scale(0); }
+            20% { opacity: 1; transform: translateY(-20px) scale(1); }
+            80% { opacity: 1; transform: translateY(-80px) scale(1); }
+            100% { opacity: 0; transform: translateY(-100px) scale(0); }
+        }
+       section {
+            opacity: 0;
+            transform: scale(0.98) translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            position: absolute;
+            box-shadow: none;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100vh;
+            display: none;
+        }
+
+        section.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            display: flex !important;
+        }
+
+        section.exit {
+            opacity: 0;
+            transform: scale(0.95);
+            box-shadow: none;
+        }
+    
+
+
+        .opening-card {
+            background: #f2ecd6;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .corner-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.4), rgba(210, 180, 140, 0.3));
+            border: 2px solid rgba(210, 180, 140, 0.6);
+            color: #5c4430;
+            border-radius: 12px;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 15;
+        }
+
+        .corner-button:hover {
+            background: rgba(255, 182, 193, 0.5);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+            transform: translateY(-3px);
+        }
+
+        .opening-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.3)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.3)"/><circle cx="40" cy="80" r="1" fill="rgba(255,255,255,0.3)"/><circle cx="70" cy="10" r="1.5" fill="rgba(255,255,255,0.3)"/><circle cx="10" cy="70" r="1" fill="rgba(255,255,255,0.3)"/></svg>');
+            animation: sparkle 6s linear infinite;
+        }
+
+        .opening-content {
+            z-index: 2;
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            text-align: center;
+        }
+
+        .opening-image {
+            width: 90%;
+            max-width: 1000px;
+            height: 500px;
+            border-radius: 25px;
+            border: 8px solid white;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            object-fit: cover;
+            animation: float 4s ease-in-out infinite;
+            display: block;
+            margin: 0 auto;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .opening-title, .opening-subtitle {
+            display: inline-block;
+            overflow: hidden;             /* ẩn phần chữ chưa gõ */
+            white-space: nowrap;          /* không xuống dòng */
+            border-right: 3px solid #5c4430; /* tạo caret */
+            animation: typing 3s steps(30, end), blink-caret 0.75s step-end infinite;
+            font-size: 2.5em;
+            color: #5c4430;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* typing effect */
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        /* caret blink */
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #5c4430; }
+        }
+
+        .gallery-section {
+            min-height: 100vh;
+            padding: 80px 20px;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            display: none;
+        }
+
+        .happy-birthday {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .happy-birthday h2 {
+            font-size: 4em;
+            color: white;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+            animation: colorChange 3s ease-in-out infinite;
+        }
+
+        @keyframes colorChange {
+            0%, 100% { color: #fff; }
+            25% { color: #ffeb3b; }
+            50% { color: #ff9800; }
+            75% { color: #e91e63; }
+        }
+
+        .birthday-decoration {
+            font-size: 2em;
+            margin: 20px 0;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-caption {
+            padding: 20px;
+            text-align: center;
+            color: #333;
+            font-style: italic;
+        }
+
+        .final-card {
+            position: relative;
+            min-height: 100vh;
+            background: url('/loichuc.png') no-repeat center center/contain;
+            display: flex;
+            background-color:#f2ecd6;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px;
+        }
+
+        .overlay-content {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255,255,255,0.8);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+            margin-left: 13%;
+        }
+
+       @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@400;600&display=swap');
+
+     @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+
+        .message-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2em;
+            text-align: center;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .message-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.3em;
+            line-height: 1.6;
+            color: #555;
+            text-align: center;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .signature {
+            font-family: 'Great Vibes', cursive;
+            text-align: center;
+            font-size: 1em;
+            color: #333;
+        }
+
+
+        /* Responsive cho điện thoại */
+        @media (max-width: 768px) {
+            .overlay-content {
+                margin-left: 0;
+                width: 90%;
+            }
+            .message-title {
+                font-size: 1.7em;
+            }
+            .message-text {
+                font-size: 1em;
+            }
+        }
+    
+    </style>
+</head>
+<body>
+    <audio id="audio" src="happy.mp3" autoplay loop></audio>
+    <script>
+    document.addEventListener('click', () => {
+        const audio = document.getElementById("audio");
+        audio.play();
+    }, { once: true });
+    </script>
+
+    <!-- SECTION 1: CARD MỞ ĐẦU 1 -->
+    <section class="opening-card active">
+        <div class="opening-content" onclick="nextSection()">
+             <h2 class="opening-title">This is Giftcard for Cam Tien 💖</h2>
+            <img src="2.png" alt="Bức Thư Sinh Nhật Của Tiên" class="opening-image">
+        </div>
+        <div class="sticker star1">
+            <img src="anhsticker.png" alt="Sticker Star 1">
+        </div>
+        <div class="sticker star2">
+            <img src="anhsticker2.png" alt="Sticker Star 2">
+        </div>
+        <div class="sticker star3">
+            <img src="anhstiker1.png" alt="Sticker Star 3">
+        </div>
+        <div class="sticker star4">
+            <img src="anhsticker5.png" alt="Sticker Star 4">
+        </div>
+        <div class="sticker gift">
+            <img src="anhsticker6.png" alt="Sticker Gift">
+        </div>
+        <div class="sticker cake">
+            <img src="anhsticker7.png" alt="Sticker Cake">
+        </div>
+        <div class="sticker heart1">💖</div>
+        <div class="sticker heart2">💖</div>
+        <div class="sticker heart3">💖</div>
+        <div class="sparkle" style="top: 20%; left: 30%; animation-delay: 0s;"></div>
+        <div class="sparkle" style="top: 60%; right: 25%; animation-delay: 0.5s;"></div>
+        <div class="sparkle" style="bottom: 30%; left: 40%; animation-delay: 1s;"></div>
+        <div class="sparkle" style="top: 40%; right: 40%; animation-delay: 1.5s;"></div>
+        <div class="sparkle" style="bottom: 50%; right: 30%; animation-delay: 2s;"></div>
+        <div class="particle" style="top: 80%; left: 20%; animation-delay: 0s;"></div>
+        <div class="particle" style="top: 85%; left: 60%; animation-delay: 0.3s;"></div>
+        <div class="particle" style="top: 90%; right: 30%; animation-delay: 0.6s;"></div>
+        <div class="particle" style="top: 88%; right: 60%; animation-delay: 0.9s;"></div>
+    </section>
+    <!-- SECTION 2: CARD MỞ ĐẦU 2 -->
+    <section class="opening-card">
+        <div class="opening-content" onclick="nextSection()" >
+            <img src="anhchao.png" alt="Bức Thư Sinh Nhật Của Tiên" class="opening-image">
+        </div>
+       <div class="sticker-frame">
+            <div class="flower hoa1"><img src="hoa1.png" alt="Hoa 1"></div>
+            <div class="flower hoa2"><img src="hoa2.png" alt="Hoa 2"></div>
+            <div class="flower hoa3"><img src="hoa3.png" alt="Hoa 3"></div>
+            <div class="flower hoa4"><img src="hoa4.png" alt="Hoa 4"></div>
+            <div class="flower hoa5"><img src="hoa5.png" alt="Hoa 5"></div>
+
+            <div class="flower hoa6"><img src="hoa.png" alt="Hoa 6"></div>
+            <div class="flower hoa7"><img src="hoa1.png" alt="Hoa 7"></div>
+            <div class="flower hoa9"><img src="hoa3.png" alt="Hoa 9"></div>
+            <div class="flower hoa10"><img src="hoa4.png" alt="Hoa 10"></div>
+            <div class="flower hoa11"><img src="hoa5.png" alt="Hoa 11"></div>
+            <div class="flower hoa12"><img src="hoa.png" alt="Hoa 12"></div>
+            <div class="flower hoa13"><img src="hoa1.png" alt="Hoa 13"></div>
+            <div class="flower hoa14"><img src="hoa2.png" alt="Hoa 14"></div>
+            <div class="flower hoa15"><img src="hoa3.png" alt="Hoa 15"></div>
+        </div>
+
+        <div class="sparkle" style="top: 20%; left: 30%; animation-delay: 0s;"></div>
+        <div class="sparkle" style="top: 60%; right: 25%; animation-delay: 0.5s;"></div>
+        <div class="sparkle" style="bottom: 30%; left: 40%; animation-delay: 1s;"></div>
+        <div class="sparkle" style="top: 40%; right: 40%; animation-delay: 1.5s;"></div>
+        <div class="sparkle" style="bottom: 50%; right: 30%; animation-delay: 2s;"></div>
+        <div class="particle" style="top: 80%; left: 20%; animation-delay: 0s;"></div>
+        <div class="particle" style="top: 85%; left: 60%; animation-delay: 0.3s;"></div>
+        <div class="particle" style="top: 90%; right: 30%; animation-delay: 0.6s;"></div>
+        <div class="particle" style="top: 88%; right: 60%; animation-delay: 0.9s;"></div>
+    </section>
+    <!-- SECTION 4: CARD CUỐI VỚI COLLAGE VÀ LỜI CHÚC -->
+    <section class="final-card" onclick="nextSection()">
+        <div class="overlay-content">
+            <div class="message-section">
+                <h3 class="message-title"></h3>
+                <p class="message-text"></p>
+                <div class="signature"></div>
+            </div>
+        </div>
+    </section>
+
+    <audio id="typeSound" src="audio1.mp3"></audio>
+
+    <script>
+        const messages = [
+            {
+                selector: '.message-title',
+                text: 'Happy Birthday Cẩm Tiên 💕💕',
+                speed: 100
+            },
+            {
+                selector: '.message-text',
+                text: `Tadaaaaaaa, vậy là hôm nay là sinh nhật của ngoan xinh iu rùi này cho nên là........
+    Bạn nhỏ chúc mừng sinh nhật ngoan xinh iu nhaaaaaa 🎉
+    Bước sang tuổi mới này, bạn nhỏ mong ngoan xinh iu sẽ luôn luôn xinh đẹp, rạng rỡ và tỏa sáng như ánh mặt trời, 
+    hạnh phúc như những đóa hoa đang nở rộ, và thành công trong mọi điều mà ngoan xinh iu làm nhaaaaaaaa.
+    Mong ngày nào của bông hoa này cũng sẽ là một ngày tràn đầy niềm vui và hạnh phúc 🌷🌷🌷.
+    Chúc ngoan xinh iu có một ngày sinh nhật vui vẻ và hạnh phúc nhaaaaa! 🎂✨`,
+                speed: 50
+            },
+            {
+                selector: '.signature',
+                text: '- From with love 💖 -\nBạn nhỏ nè 💕',
+                speed: 80
+            }
+        ];
+
+        const typeSound = document.getElementById("typeSound");
+
+        async function typeWriter(selector, text, speed) {
+            const element = document.querySelector(selector);
+            const section = document.querySelector('.final-card');
+
+            for (let i = 0; i < text.length; i++) {
+                element.innerHTML += text[i] === '\n' ? '<br>' : text[i];
+
+                // // Chỉ play khi section đang hiển thị trên viewport
+                // if (section && isElementInViewport(section)) {
+                //     if (typeSound) {
+                //         typeSound.currentTime = 0;
+                //         typeSound.play();
+                //     }
+                // }
+
+                let delay = speed + Math.random() * 30;
+                if (",.!?".includes(text[i])) delay += 200;
+                await new Promise(r => setTimeout(r, delay));
+            }
+        }
+
+        // Hàm kiểm tra section có nằm trong màn hình hay không
+        function isElementInViewport(el) {
+            const rect = el.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+        async function startTyping() {
+            for (const msg of messages) {
+                await typeWriter(msg.selector, msg.text, msg.speed);
+            }
+        }
+
+        startTyping();
+    </script>
+
+
+    <section class="heart-section" onclick="resetSections()">
+        <div class="heart-content">
+            <h2 class="opening-title">Tặng cô giáo mụt trái tim nhỏ này 💖</h2>
+        </div>
+        <div class="heart-frame">
+        <canvas id="heart"></canvas>
+        </div>
+        <style>
+            .heart-section {
+                position: absolute;
+                flex-direction: column;
+                top: 0;
+                left: 0;
+                width: 100%;
+                min-height: 100vh;
+                background: #f2ecd6;
+                display: none;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+                opacity: 0;
+                transform: scale(0.98) translateY(20px);
+                transition: opacity 0.8s ease, transform 0.8s ease;
+            }
+
+            .heart-section.active {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+                display: flex !important;
+            }
+
+            .heart-section.exit {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            .heart-section canvas {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: #f2ecd6;
+            }
+            
+            .heart-frame {
+                position: relative;
+                width: 90%;
+                max-width: 600px;
+                height: 400px;
+                background: #fff;
+                border: 8px solid #ffffff;
+                border-radius: 25px;
+                box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+                overflow: hidden;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                animation: float 4s ease-in-out infinite;
+            }
+
+            @keyframes float {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-15px); }
+            }
+
+            .heart-frame canvas {
+                width: 100%;
+                height: 100%;
+                background-color: #f2ecd6;
+            }
+        </style>
+        <script>
+            (function () {
+                window.requestAnimationFrame =
+                    window.__requestAnimationFrame ||
+                    window.requestAnimationFrame ||
+                    window.webkitRequestAnimationFrame ||
+                    window.mozRequestAnimationFrame ||
+                    window.oRequestAnimationFrame ||
+                    window.msRequestAnimationFrame ||
+                    (function () {
+                        return function (callback, element) {
+                            var lastTime = element.__lastTime;
+                            if (lastTime === undefined) {
+                                lastTime = 0;
+                            }
+                            var currTime = Date.now();
+                            var timeToCall = Math.max(1, 33 - (currTime - lastTime));
+                            window.setTimeout(callback, timeToCall);
+                            element.__lastTime = currTime + timeToCall;
+                        };
+                    })();
+                window.isDevice = (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(((navigator.userAgent || navigator.vendor || window.opera)).toLowerCase()));
+                var loaded = false;
+                var init = function () {
+                    if (loaded) return;
+                    loaded = true;
+                    var mobile = window.isDevice;
+                    var koef = mobile ? 0.5 : 1;
+                    var canvas = document.getElementById('heart');
+                    var ctx = canvas.getContext('2d');
+                    var width = canvas.width = koef * innerWidth;
+                    var height = canvas.height = koef * innerHeight;
+                    var rand = Math.random;
+                    ctx.fillStyle = "rgba(0,0,0,1)";
+                    ctx.fillRect(0, 0, width, height);
+
+                    var heartPosition = function (rad) {
+                        return [Math.pow(Math.sin(rad), 3), -(15 * Math.cos(rad) - 5 * Math.cos(2 * rad) - 2 * Math.cos(3 * rad) - Math.cos(4 * rad))];
+                    };
+                    var scaleAndTranslate = function (pos, sx, sy, dx, dy) {
+                        return [dx + pos[0] * sx, dy + pos[1] * sy];
+                    };
+
+                    window.addEventListener('resize', function () {
+                        width = canvas.width = koef * innerWidth;
+                        height = canvas.height = koef * innerHeight;
+                        ctx.fillStyle = "rgba(0,0,0,1)";
+                        ctx.fillRect(0, 0, width, height);
+                    });
+
+                    var traceCount = mobile ? 20 : 50;
+                    var pointsOrigin = [];
+                    var i;
+                    var dr = mobile ? 0.3 : 0.1;
+                    for (i = 0; i < Math.PI * 2; i += dr) pointsOrigin.push(scaleAndTranslate(heartPosition(i), 210, 13, 0, 0));
+                    for (i = 0; i < Math.PI * 2; i += dr) pointsOrigin.push(scaleAndTranslate(heartPosition(i), 150, 9, 0, 0));
+                    for (i = 0; i < Math.PI * 2; i += dr) pointsOrigin.push(scaleAndTranslate(heartPosition(i), 90, 5, 0, 0));
+                    var heartPointsCount = pointsOrigin.length;
+
+                    var targetPoints = [];
+                    var pulse = function (kx, ky) {
+                        for (i = 0; i < pointsOrigin.length; i++) {
+                            targetPoints[i] = [];
+                            targetPoints[i][0] = kx * pointsOrigin[i][0] + width / 2;
+                            targetPoints[i][1] = ky * pointsOrigin[i][1] + height / 2;
+                        }
+                    };
+
+                    var e = [];
+                    for (i = 0; i < heartPointsCount; i++) {
+                        var x = rand() * width;
+                        var y = rand() * height;
+                        e[i] = {
+                            vx: 0,
+                            vy: 0,
+                            R: 2,
+                            speed: rand() + 5,
+                            q: ~~(rand() * heartPointsCount),
+                            D: 2 * (i % 2) - 1,
+                            force: 0.2 * rand() + 0.7,
+                            f: "hsla(0," + ~~(40 * rand() + 60) + "%," + ~~(60 * rand() + 20) + "%,.3)",
+                            trace: []
+                        };
+                        for (var k = 0; k < traceCount; k++) e[i].trace[k] = {x: x, y: y};
+                    }
+
+                    var config = {
+                        traceK: 0.4,
+                        timeDelta: 0.01
+                    };
+
+                    var time = 0;
+                    var loop = function () {
+                        var n = -Math.cos(time);
+                        pulse((1 + n) * .5, (1 + n) * .5);
+                        time += ((Math.sin(time)) < 0 ? 9 : (n > 0.8) ? .2 : 1) * config.timeDelta;
+                        ctx.fillStyle = "rgba(0,0,0,.1)";
+                        ctx.fillRect(0, 0, width, height);
+                        for (i = e.length; i--;) {
+                            var u = e[i];
+                            var q = targetPoints[u.q];
+                            var dx = u.trace[0].x - q[0];
+                            var dy = u.trace[0].y - q[1];
+                            var length = Math.sqrt(dx * dx + dy * dy);
+                            if (10 > length) {
+                                if (0.95 < rand()) {
+                                    u.q = ~~(rand() * heartPointsCount);
+                                } else {
+                                    if (0.99 < rand()) {
+                                        u.D *= -1;
+                                    }
+                                    u.q += u.D;
+                                    u.q %= heartPointsCount;
+                                    if (0 > u.q) {
+                                        u.q += heartPointsCount;
+                                    }
+                                }
+                            }
+                            u.vx += -dx / length * u.speed;
+                            u.vy += -dy / length * u.speed;
+                            u.trace[0].x += u.vx;
+                            u.trace[0].y += u.vy;
+                            u.vx *= u.force;
+                            u.vy *= u.force;
+                            for (k = 0; k < u.trace.length - 1;) {
+                                var T = u.trace[k];
+                                var N = u.trace[++k];
+                                N.x -= config.traceK * (N.x - T.x);
+                                N.y -= config.traceK * (N.y - T.y);
+                            }
+                            ctx.fillStyle = u.f;
+                            for (k = 0; k < u.trace.length; k++) {
+                                ctx.fillRect(u.trace[k].x, u.trace[k].y, 1, 1);
+                            }
+                        }
+                        window.requestAnimationFrame(loop, canvas);
+                    };
+
+                    loop();
+                };
+
+                var s = document.readyState;
+                if (s === 'complete' || s === 'loaded' || s === 'interactive') init();
+                else document.addEventListener('DOMContentLoaded', init, false);
+            })();
+        </script>
+    </section>
+
+    <script>
+        let currentSection = 0;
+        const sections = document.querySelectorAll('section');
+
+        function nextSection() {
+            const current = sections[currentSection];
+            current.classList.add('exit');
+            setTimeout(() => {
+                current.classList.remove('active', 'exit');
+                currentSection = (currentSection + 1) % sections.length;
+                sections[currentSection].classList.add('active');
+            }, 800);
+        }
+
+        function resetSections() {
+            const current = sections[currentSection];
+            current.classList.add('exit');
+            setTimeout(() => {
+                current.classList.remove('active', 'exit');
+                currentSection = 0;
+                sections[currentSection].classList.add('active');
+            }, 800);
+        }
+
+        sections[0].classList.add('active');
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '💖';
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.top = window.innerHeight + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }
+        setInterval(createHeart, 800);
+    </script>
+</body>
+</html>
